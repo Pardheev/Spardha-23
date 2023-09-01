@@ -16,14 +16,14 @@ import {
   Button,
 } from 'reactstrap';
 import styles from '../Signup/Signup.module.css';
-
+import { useNavigate } from 'react-router-dom';
 function Verify() {
   const ref_container = useRef();
   useEffect(() => {
     const scrollDiv = document.getElementById('verifyDiv').offsetTop;
     window.scrollTo({ top: scrollDiv + 600, behavior: 'smooth' });
   }, []);
-
+    const navigate = useNavigate();
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -53,6 +53,9 @@ function Verify() {
         return;
       })
       .catch(({ response }) => {
+        if(response.status===500 || response.status === 403 || response.status === 502){
+          navigate("/*")
+        }
         dispatchToast({
           color: 'danger',
           message: response.data[Object.keys(response.data)[0]].toString(),
