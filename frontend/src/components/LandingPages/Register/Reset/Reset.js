@@ -15,6 +15,7 @@ import {
 import { Link, useSearchParams } from 'react-router-dom';
 import { FaKey, FaPaperPlane, FaUser } from 'react-icons/fa';
 import { useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Reset() {
   const ref_container = useRef();
@@ -23,6 +24,7 @@ function Reset() {
     window.scrollTo({ top: scrollDiv + 600, behavior: 'smooth' });
   }, []);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -60,6 +62,9 @@ function Reset() {
         return;
       })
       .catch(({ response }) => {
+        if(response.status===500 || response.status === 403 || response.status === 502){
+          navigate("/*")
+        }
         dispatchToast({
           color: 'danger',
           message: response.data[Object.keys(response.data)[0]].toString(),

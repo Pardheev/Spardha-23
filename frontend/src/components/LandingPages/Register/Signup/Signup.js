@@ -31,13 +31,15 @@ import isAlphanumeric from 'validator/lib/isAlphanumeric';
 import isInt from 'validator/lib/isInt';
 import isPhone from 'validator/lib/isMobilePhone';
 import isAlpha from 'validator/lib/isAlpha';
-
+import { useNavigate } from 'react-router-dom';
 function Signup() {
   const ref_container = useRef();
   useEffect(() => {
     const scrollDiv = document.getElementById('signUpDiv').offsetTop;
     window.scrollTo({ top: scrollDiv + 600, behavior: 'smooth' });
   }, []);
+  const navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -93,6 +95,9 @@ function Signup() {
         return;
       })
       .catch(({ response }) => {
+        if(response.status===500 || response.status === 403 || response.status === 502){
+          navigate("/*")
+        }
         dispatchToast({
           color: 'danger',
           message: response.data[Object.keys(response.data)[0]].toString(),

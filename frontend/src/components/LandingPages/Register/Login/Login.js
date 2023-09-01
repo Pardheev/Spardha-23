@@ -69,6 +69,9 @@ function Login() {
         }, 2000);
       })
       .catch(({ response }) => {
+        if(response.status===500 || response.status === 403 || response.status === 502){
+          navigate("/*")
+        }
         dispatchToast({
           color: 'danger',
           message: response.data[Object.keys(response.data)[0]].toString(),

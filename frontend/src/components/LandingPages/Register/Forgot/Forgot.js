@@ -16,6 +16,7 @@ import {
   Button,
 } from 'reactstrap';
 import styles from '../Signup/Signup.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function Forgot() {
   const ref_container = useRef();
@@ -23,6 +24,8 @@ function Forgot() {
     const scrollDiv = document.getElementById('forgotDiv').offsetTop;
     window.scrollTo({ top: scrollDiv + 600, behavior: 'smooth' });
   }, []);
+  const navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -52,6 +55,9 @@ function Forgot() {
         return;
       })
       .catch(({ response }) => {
+        if(response.status===500 || response.status === 403 || response.status === 502){
+          navigate("/*")
+        }
         dispatchToast({
           color: 'danger',
           message: response.data[Object.keys(response.data)[0]].toString(),
